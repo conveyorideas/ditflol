@@ -29,6 +29,8 @@ public class DesktopLauncher implements Macros {
 		config.x = 0;
 		config.y = 0;
 		}else{
+			config.height = sSize.height;
+			config.width = sSize.width;
 			config.fullscreen = true;
 		}
 		new LwjglApplication(new DitFMain(), config);
