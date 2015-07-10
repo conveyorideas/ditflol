@@ -1,0 +1,45 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+
+public class LoadScreen implements Screen {
+
+	public LoadScreen() {}
+	
+	private void loadAssets() {
+		GameAssetManager.getInstance().load("disaytid.png", Texture.class);
+	}
+	
+	@Override
+	public void show() {
+		
+		GameAssetManager.getInstance().init();
+		loadAssets();
+
+	}
+
+	@Override
+	public void render(float delta) {
+		if(GameAssetManager.getInstance().update()){
+			ScreenManager.getInstance().show(CustomScreen.GAME);
+		}
+	}
+
+	@Override
+	public void resize(int width, int height) {}
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void hide() {}
+
+	@Override
+	public void dispose() {}
+
+}

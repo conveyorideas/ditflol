@@ -1,0 +1,12 @@
+package com.mygdx.game;
+
+public enum CustomScreen {
+
+	LOAD_SCREEN {
+		@Override
+		protected Screen getScreenInsynce() {
+			return new LoadScreen();
+		}
+	}
+	
+}

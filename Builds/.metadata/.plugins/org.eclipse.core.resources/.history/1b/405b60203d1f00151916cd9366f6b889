@@ -1,0 +1,16 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.Screen;
+
+public enum CustomScreen {
+
+	LOAD_SCREEN {
+		@Override
+		protected Screen getScreenInsynce() {
+			return new LoadScreen();
+		}
+	};
+
+	protected abstract Screen getScreenInsynce();
+	
+}

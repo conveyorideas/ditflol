@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="8" tileheight="8" nextobjectid="15">
+ <tileset firstgid="1" name="ground2" tilewidth="265" tileheight="18">
+  <image source="../sprites/ground2.png" width="265" height="18"/>
+ </tileset>
+ <layer name="Слой тайлов 1" width="12" height="12" opacity="0.94">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+1,0,0,0,0,0,0,0,1,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="coll">
+  <object id="14" x="0" y="72">
+   <polyline points="0,0 328,0"/>
+  </object>
+ </objectgroup>
+</map>

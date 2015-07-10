@@ -1,0 +1,27 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class TiledObjectsUtils {
+
+	public static void parseTiledObjectLayer(World world, MapObjects objects){
+		for(MapObject object : objects) {
+			Shape shape;
+			if(object instanceof PolylineMapObject) {
+				shape = createPolyline((PolylineMapObject) object)
+			}
+		}
+	}
+	
+	
+
+	private static ChainShape createPolyline(PolylineMapObject object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

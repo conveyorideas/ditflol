@@ -1,0 +1,33 @@
+package com.mygdx.game;
+
+import java.util.Stack;
+
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetErrorListener;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.RefCountedContainer;
+import com.badlogic.gdx.assets.loaders.AssetLoader;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.ObjectSet;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+
+public class KostilAssetManager extends AssetManager {
+
+	TiledMap map;
+	
+	public KostilAssetManager () {
+		this(new InternalFileHandleResolver());
+	}
+	public KostilAssetManager(FileHandleResolver resolver){
+		map = new TmxMapLoader(resolver);
+	    new AssetManager().setLoader(TiledMap.class, new TmxMapLoader(resolver));
+	}
+}

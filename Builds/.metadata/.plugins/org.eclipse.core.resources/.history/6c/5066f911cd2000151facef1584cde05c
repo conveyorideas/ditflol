@@ -1,0 +1,127 @@
+package com.mygdx.game;
+
+import javafx.scene.input.KeyCode;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class GameScreen implements Screen {
+
+	SpriteBatch batch;
+	Texture disaytid;
+	OrthogonalTiledMapRenderer tmx;
+	OrthographicCamera camera;
+	TiledMap map;
+	World world;
+	Box2DDebugRenderer b2dr;
+	Body player;
+	Mesh mesh;
+	
+	@Override
+	public void show() {
+		 mesh = new Mesh(true, 4, 6,
+				    new VertexAttribute(VertexAttributes.Usage.Position, 3,"attr_Position"),
+				    new VertexAttribute(Usage.TextureCoordinates, 2, "attr_texCoords"));
+				  texture = new Texture(Gdx.files.internal("data/sc_map.png"));
+				  mesh.setVertices(new float[] { 
+				     -1024f, -1024f, 0, 0, 1,
+				      1024f, -1024f, 0, 1, 1,
+				      1024f,  1024f, 0, 1, 0,
+				     -1024f,  1024f, 0, 0, 0
+				  });
+				  mesh.setIndices(new short[] { 0, 1, 2, 2, 3, 0 });
+		batch = new SpriteBatch();
+		map = new TmxMapLoader().load("maps/test.tmx");
+		tmx = new OrthogonalTiledMapRenderer(map);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		world = new World(new Vector2(0, -100f), false);
+		b2dr = new Box2DDebugRenderer();
+		TiledObjectsUtils.parseTiledObjectLayer(world, map.getLayers().get("coll").getObjects());
+		player = createBox();
+		
+	}
+
+	@Override
+	public void render(float delta) {
+		update(delta);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.begin();
+		tmx.render();
+		batch.end();
+		b2dr.render(world, camera.combined);
+	}
+	
+	public void update(float delta){
+		world.step(1/60f, 6, 2);
+		camera.update();
+		movingUpdate(delta);
+		tmx.setView(camera);
+		batch.setProjectionMatrix(camera.combined);
+	}
+
+	private void movingUpdate(float delta) {
+		int horizontspeed = 0;
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			horizontspeed = -5;
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+			horizontspeed = 5;
+		}
+		
+		player.setLinearVelocity(horizontspeed * 5, player.getLinearVelocity().y);
+		
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		camera.setToOrtho(false, width /2, height/2);
+	}
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void hide() {}
+
+	@Override
+	public void dispose() {
+		disaytid.dispose();
+		batch.dispose();
+		tmx.dispose();
+		map.dispose();
+	}
+	
+	public Body createBox(){
+		Body body2;
+		BodyDef bdef2 = new BodyDef();
+		bdef2.type = BodyDef.BodyType.DynamicBody;
+		bdef2.position.set(100, 100);
+		bdef2.fixedRotation = true;
+		body2 = world.createBody(bdef2);
+		PolygonShape ps = new PolygonShape();
+		ps.setAsBox(32/4, 32/4);
+		body2.createFixture(ps, 1.0f);
+		ps.dispose();
+		return body2;
+	}
+
+}

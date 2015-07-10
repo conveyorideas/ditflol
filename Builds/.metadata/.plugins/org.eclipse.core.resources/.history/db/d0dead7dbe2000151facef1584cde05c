@@ -1,0 +1,12 @@
+package com.mygdx.game;
+
+static public class TextFieldStyle {
+    public NinePatch background, cursor;
+    public BitmapFont font;
+    public Color fontColor;
+
+    public TextureRegion selection;
+
+    public BitmapFont messageFont;
+
+    public Color messageFontColor;

@@ -1,0 +1,11 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.physics.box2d.World;
+
+public class TiledObjectsUtils {
+
+	public static void parseTiledObjectLayer(World world, MapObjects object){
+		
+	}
+	
+}

@@ -1,0 +1,37 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class TiledObjectsUtils {
+
+	public static void parseTiledObjectLayer(World world, MapObjects objects){
+		for(MapObject object : objects) {
+			Shape shape;
+			if(object instanceof PolylineMapObject) {
+				shape = createPolyline((PolylineMapObject) object);
+			}else{
+				continue;
+			}
+			Body body;
+			BodyDef bdef = new BodyDef();
+			bdef.type = BodyDef.BodyType.StaticBody;
+			body.createFixture(shape, 1.0f);
+			shape.dispose();
+		}
+	}
+	
+	
+
+	private static ChainShape createPolyline(PolylineMapObject polyline) {
+		float[] vertices = polyline.getPolyline().getTransformedVertices();
+		return null;
+	}
+	
+}

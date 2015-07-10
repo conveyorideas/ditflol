@@ -1,0 +1,17 @@
+package com.mygdx.game;
+
+public class ScreenManager {
+
+	private static ScreenManager instance;
+	
+	private Game game;
+	
+	private IntMap<Screen> screens;
+	
+	private ScreenManager() {
+		screens = new IntMap<Screen>();
+		
+	}
+	
+	
+}

@@ -1,0 +1,78 @@
+package com.mygdx.game;
+
+import java.util.Stack;
+
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetErrorListener;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.RefCountedContainer;
+import com.badlogic.gdx.assets.loaders.AssetLoader;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.ObjectSet;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+
+public class KostilAssetManager extends AssetManager {
+	final ObjectMap<Class, ObjectMap<String, RefCountedContainer>> assets = new ObjectMap();
+	final ObjectMap<String, Class> assetTypes = new ObjectMap();
+	final ObjectMap<String, Array<String>> assetDependencies = new ObjectMap();
+	final ObjectSet<String> injected = new ObjectSet();
+
+	final ObjectMap<Class, ObjectMap<String, AssetLoader>> loaders = new ObjectMap();
+	final Array<AssetDescriptor> loadQueue = new Array();
+	final AsyncExecutor executor;
+	AssetErrorListener listener = null;
+	int loaded = 0;
+	int toLoad = 0;
+
+	
+	public KostilAssetManager () {
+		this(new InternalFileHandleResolver());
+	}
+	public KostilAssetManager(FileHandleResolver resolver){
+	    new AssetManager().setLoader(TiledMap.class, new TmxMapLoader(resolver));
+	}
+	
+	/** Adds the given asset to the loading queue of the AssetManager.
+	 * @param fileName the file name (interpretation depends on {@link AssetLoader})
+	 * @param type the type of the asset. */
+	public synchronized <T> void load (String fileName, Class<T> type) {
+		load(fileName, type, null);
+	}
+
+	public synchronized <T> void load (String fileName, Class<T> type, AssetLoaderParameters<T> parameter) {
+		AssetLoader loader = getLoader(type, fileName);
+		if (loader == null) throw new GdxRuntimeException("No loader for type: " + ClassReflection.getSimpleName(type));
+		
+		if (loadQueue.size == 0) {
+			loaded = 0;
+			toLoad = 0;
+		}
+		
+		for (int i = 0; i < loadQueue.size; i++) {
+			AssetDescriptor desc = loadQueue.get(i);
+			if (desc.fileName.equals(fileName) && !desc.type.equals(type))
+				throw new GdxRuntimeException("Asset with name '" + fileName
+					+ "' already in preload queue, but has different type (expected: " + ClassReflection.getSimpleName(type)
+					+ ", found: " + ClassReflection.getSimpleName(desc.type) + ")");
+		}
+
+
+		// check loaded assets
+		Class otherType = assetTypes.get(fileName);
+		if (otherType != null && !otherType.equals(type))
+			throw new GdxRuntimeException("Asset with name '" + fileName + "' already loaded, but has different type (expected: "
+				+ ClassReflection.getSimpleName(type) + ", found: " + ClassReflection.getSimpleName(otherType) + ")");
+
+		toLoad++;
+		AssetDescriptor assetDesc = new AssetDescriptor(fileName, type, parameter);
+		loadQueue.add(assetDesc);
+	}
+}

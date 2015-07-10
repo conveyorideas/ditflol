@@ -1,0 +1,16 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+
+public class GameAssetManager extends KostilAssetManager {
+
+	
+	public static GameAssetManager getInstance() {
+		if(null == instance) {
+			instance = new GameAssetManager();
+		}
+		return instance;
+	}
+
+}

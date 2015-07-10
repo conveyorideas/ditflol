@@ -1,0 +1,102 @@
+package com.mygdx.game;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+
+public class CreatePScreen implements Screen {
+
+	private String locationgame = DitFMain.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	private String dirPathgame = new File(locationgame).getParent();
+	DocumentBuilder builder;
+	int a = 1;
+	String name;
+	
+	public CreatePScreen() {
+		ParamLangXML();
+	}
+	
+	private void WriteParamXML(int data, String name) throws TransformerException, IOException {
+		Document doc=builder.newDocument();
+		Element RootElement = doc.createElement("data");
+		
+			Element PlayerElementName = doc.createElement("name");
+			PlayerElementName.appendChild(doc.createTextNode(name));
+			RootElement.appendChild(PlayerElementName);
+		doc.appendChild(RootElement);
+		
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		t.setOutputProperty(OutputKeys.METHOD, "xml");
+		t.setOutputProperty(OutputKeys.INDENT, "yes");
+		t.transform(new DOMSource(doc), new StreamResult(new FileOutputStream(dirPathgame + "/assets/" + name + "/data.xml")));
+		
+		ScreenManager.getInstance().show(CustomScreen.GAME);
+	}
+
+	private void ParamLangXML() {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try { builder = factory.newDocumentBuilder(); }
+		catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void show() {}
+
+	@Override
+	public void render(float delta) {
+	}
+
+	@Override
+	public void resize(int width, int height) {}
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void hide() {}
+
+	@Override
+	public void dispose() {}
+	
+	public void initPlayer(String name, int data){
+		System.out.println("Initialization player start...");
+		System.out.println("Jar file: " + dirPathgame);
+		new File(dirPathgame + "/assets/" + name + "/").mkdir();
+		try {
+			if(new File(dirPathgame + "/assets/" + name + "/data.xml").exists()){
+				System.out.println("Player is found...");
+				ScreenManager.getInstance().show(CustomScreen.GAME);
+			}else{
+				System.err.println("Player is not found...");
+				WriteParamXML(data, name);
+			}
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
