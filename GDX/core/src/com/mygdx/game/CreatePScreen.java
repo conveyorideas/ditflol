@@ -22,6 +22,7 @@ import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -40,11 +41,12 @@ public class CreatePScreen implements Screen {
 	int a = 1;
 	TextField name;
 	Button button;
-	GUITextInputListener listener;
 	Stage stage;
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	Viewport viewport;
+	Texture clothes[][];
+	Texture player;
 	
 	public CreatePScreen() {
 		ParamLangXML();
@@ -84,24 +86,30 @@ public class CreatePScreen implements Screen {
 		viewport.apply();
 		camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 		batch = new SpriteBatch();
-		listener = new GUITextInputListener();
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		name = new TextField("Hello", skin);
 		name.setSize(300, 40);
-		name.setPosition(Gdx.graphics.getWidth()/2-name.getWidth()/2, Gdx.graphics.getHeight()/2-name.getHeight()/2);
+		name.setPosition(Gdx.graphics.getWidth()/2-name.getWidth()/2, Gdx.graphics.getHeight()/2-name.getHeight()/2 - 270);
 		button = new Button(skin);
 		button.setName("PressMe");
 		button.setSize(300, 40);
 		button.setPosition(name.getX(),name.getY()-10-button.getHeight());
+		button.add("CREATE PLAYER");
 		stage.addActor(name);
 		stage.addActor(button);
+		clothes = new Texture[2][5];
+		player = GameAssetManager.getInstance().get("sprites/player/player.png");
+		for(int i = 0; i < 2; i++){
+			for(int j = 0; j < 5; j++){
+				clothes[i][j] =  GameAssetManager.getInstance().get("sprites/player/" + (i+1) + "/" + (j+1) + ".png");
+			}
+		}
 	}
 
 	@Override
 	public void render(float delta) {
 		update(delta);
-		//Gdx.gl.glClearColor(0, 0, 0, 1);
-	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(delta);
 		stage.draw();
 		batch.begin();
@@ -109,7 +117,6 @@ public class CreatePScreen implements Screen {
 	}
 
 	private void update(float delta) {
-	//	if(Display.)
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		stage.getBatch().setProjectionMatrix(camera.combined);
@@ -141,10 +148,10 @@ public class CreatePScreen implements Screen {
 		new File(dirPathgame + "/assets/" + name + "/").mkdir();
 		try {
 			if(new File(dirPathgame + "/assets/" + name + "/data.xml").exists()){
-				System.out.println("Player is found...");
+				System.out.println("Player is exists...");
 				ScreenManager.getInstance().show(CustomScreen.GAME);
 			}else{
-				System.err.println("Player is not found...");
+				System.err.println("Player is don't exists...");
 				WriteParamXML(data, name);
 			}
 		} catch (TransformerException e) {

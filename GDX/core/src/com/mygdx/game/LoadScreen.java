@@ -14,6 +14,26 @@ public class LoadScreen implements Screen {
 	public LoadScreen() {}
 	
 	private void loadAssets() {
+		GameAssetManager.getInstance().load("sprites/player/1/1.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/1/2.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/1/3.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/1/4.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/1/5.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/1/6.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/2/1.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/2/2.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/2/3.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/2/4.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/2/5.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/2/6.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/3/1.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/3/2.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/3/3.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/3/4.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/3/5.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/3/6.png", Texture.class);
+		GameAssetManager.getInstance().load("sprites/player/player.png", Texture.class);
+
 	}
 	
 	@Override
