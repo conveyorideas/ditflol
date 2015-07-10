@@ -14,7 +14,6 @@ public class LoadScreen implements Screen {
 	public LoadScreen() {}
 	
 	private void loadAssets() {
-		GameAssetManager.getInstance().load("disaytid.png", Texture.class);
 	}
 	
 	@Override
@@ -37,7 +36,7 @@ public class LoadScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(GameAssetManager.getInstance().update()){
-			ScreenManager.getInstance().show(CustomScreen.GAME);
+			ScreenManager.getInstance().show(CustomScreen.CREATE_PLAYER);
 		}
 	}
 
