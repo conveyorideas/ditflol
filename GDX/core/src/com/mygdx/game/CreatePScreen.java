@@ -112,7 +112,7 @@ public class CreatePScreen implements Screen {
 		update(delta);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(playerTexture, Gdx.graphics.getWidth() /2, 100);
+		batch.draw(playerTexture, Gdx.graphics.getWidth() /2 -(39/8/2), Gdx.graphics.getHeight() /2 -(106/8/2)+30, 39/8, 106/8);
 		batch.end();
 		stage.act(delta);
 		stage.draw();
@@ -120,8 +120,8 @@ public class CreatePScreen implements Screen {
 
 	private void update(float delta) {
 		camera.update();
-		batch.setProjectionMatrix(camera.combined);
 		stage.getBatch().setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
 		if(button.isPressed()) initPlayer(name.getText(), 0);
 	}
 
