@@ -42,6 +42,7 @@ public class CreatePScreen implements Screen {
 	int a = 1;
 	TextField name;
 	Button button;
+	Button buttonchr[];
 	Stage stage;
 	OrthographicCamera camera;
 	SpriteBatch batch;
@@ -50,6 +51,8 @@ public class CreatePScreen implements Screen {
 	Texture playerTexture;
 	Sprite playerSprite;
 	Sprite chr[] = new Sprite[3];
+	int chrl[] = new int[3];
+	boolean chrb[] = new boolean[3];
 	public CreatePScreen() {
 		ParamLangXML();
 	}
@@ -111,11 +114,27 @@ public class CreatePScreen implements Screen {
 		{
 			chr[i] = new Sprite(clothes[i][i]);
 			chr[i].setSize(clothes[i][i].getWidth()/8, clothes[i][i].getHeight()/8);
+			chrl[i] = i;
+			chrb[i] = true;
 		}
 		chr[0].setPosition(Gdx.graphics.getWidth() /2 -(chr[0].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[0].getHeight()/2)+36);
 		chr[1].setPosition(Gdx.graphics.getWidth() /2 -(chr[1].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[1].getHeight()/2)+30);
-		chr[2].setPosition(Gdx.graphics.getWidth() /2 -(chr[2].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[2].getHeight()/2)+26);
-		
+		chr[2].setPosition(Gdx.graphics.getWidth() /2 -(chr[2].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[2].getHeight()/2)+25);
+		buttonchr = new Button[3];
+		for(int i =0;i<=2;i++)
+		{
+			buttonchr[i] = new Button(skin);
+			buttonchr[i].setSize(10, 10);
+			buttonchr[i].add("<");
+		}
+
+		buttonchr[0].setPosition(chr[0].getX()-15-buttonchr[0].getWidth(),chr[0].getY()+200+buttonchr[0].getHeight());
+
+		buttonchr[1].setPosition(chr[1].getX()-15-buttonchr[1].getWidth(),chr[1].getY()+160+buttonchr[1].getHeight());
+		buttonchr[2].setPosition(chr[2].getX()-15-buttonchr[2].getWidth(),chr[2].getY()+140+buttonchr[2].getHeight());
+		stage.addActor(buttonchr[0]);
+		stage.addActor(buttonchr[1]);
+		stage.addActor(buttonchr[2]);
 		stage.addActor(name);
 		stage.addActor(button);
 	}
@@ -140,6 +159,23 @@ public class CreatePScreen implements Screen {
 		stage.getBatch().setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
 		if(button.isPressed()) initPlayer(name.getText(), 0);
+		for(int i= 0;i<=2;i++)
+		{
+			if(buttonchr[i].isPressed()){
+				if(chrb[i] == true)
+				{
+					if(chrl[i]<1)
+					{
+						chrl[i] = 5;
+					}
+					else
+						chrl[i]-=1;
+					chr[i].setTexture(clothes[i][chrl[i]]);
+					chrb[i] = false;
+				}
+			}
+			else chrb[i] = true;
+		}
 	}
 
 	@Override
