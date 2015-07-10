@@ -44,6 +44,7 @@ public class GameScreen implements Screen {
 		TiledObjectsUtils.parseTiledObjectLayer(world, map.getLayers().get("coll").getObjects());
 		player = createBox();
 		
+		
 	}
 
 	@Override

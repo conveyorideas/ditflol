@@ -56,7 +56,9 @@ public class LoadScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(GameAssetManager.getInstance().update()){
-			ScreenManager.getInstance().show(CustomScreen.CREATE_PLAYER);
+			ScreenManager.getInstance().show(CustomScreen.GAME);
+		}else{
+			System.out.println(GameAssetManager.getInstance().getAssetNames());
 		}
 	}
 

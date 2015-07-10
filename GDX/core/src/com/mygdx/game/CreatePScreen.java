@@ -23,6 +23,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -46,7 +47,7 @@ public class CreatePScreen implements Screen {
 	SpriteBatch batch;
 	Viewport viewport;
 	Texture clothes[][];
-	Texture player;
+	Texture playerTexture;
 	
 	public CreatePScreen() {
 		ParamLangXML();
@@ -81,13 +82,13 @@ public class CreatePScreen implements Screen {
 	public void show() {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
+		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		viewport = new ExtendViewport(100 * (100 / 50), 50, camera);
 		viewport.apply();
 		camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
-		batch = new SpriteBatch();
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
-		name = new TextField("Hello", skin);
+		name = new TextField("Your Name", skin);
 		name.setSize(300, 40);
 		name.setPosition(Gdx.graphics.getWidth()/2-name.getWidth()/2, Gdx.graphics.getHeight()/2-name.getHeight()/2 - 270);
 		button = new Button(skin);
@@ -95,25 +96,26 @@ public class CreatePScreen implements Screen {
 		button.setSize(300, 40);
 		button.setPosition(name.getX(),name.getY()-10-button.getHeight());
 		button.add("CREATE PLAYER");
-		stage.addActor(name);
-		stage.addActor(button);
 		clothes = new Texture[2][5];
-		player = GameAssetManager.getInstance().get("sprites/player/player.png");
 		for(int i = 0; i < 2; i++){
 			for(int j = 0; j < 5; j++){
 				clothes[i][j] =  GameAssetManager.getInstance().get("sprites/player/" + (i+1) + "/" + (j+1) + ".png");
 			}
 		}
+		playerTexture = GameAssetManager.getInstance().get("sprites/player/player.png");
+		stage.addActor(name);
+		stage.addActor(button);
 	}
 
 	@Override
 	public void render(float delta) {
 		update(delta);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.begin();
+		batch.draw(playerTexture, Gdx.graphics.getWidth() /2, 100);
+		batch.end();
 		stage.act(delta);
 		stage.draw();
-		batch.begin();
-		batch.end();
 	}
 
 	private void update(float delta) {
@@ -126,7 +128,6 @@ public class CreatePScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height);
-		camera.update();
 		camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 	}
 
@@ -140,7 +141,17 @@ public class CreatePScreen implements Screen {
 	public void hide() {}
 
 	@Override
-	public void dispose() {}
+	public void dispose() {
+		skin.dispose();
+		for(int i = 0; i < 2; i++){
+			for(int j = 0; j < 5; j++){
+				clothes[i][j].dispose();;
+			}
+		}
+		playerTexture.dispose();
+		batch.dispose();
+		stage.dispose();
+	}
 	
 	public void initPlayer(String name, int data){
 		System.out.println("Initialization player start...");
