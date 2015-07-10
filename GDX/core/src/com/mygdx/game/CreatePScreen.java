@@ -49,7 +49,7 @@ public class CreatePScreen implements Screen {
 	Texture clothes[][];
 	Texture playerTexture;
 	Sprite playerSprite;
-	
+	Sprite chr[] = new Sprite[3];
 	public CreatePScreen() {
 		ParamLangXML();
 	}
@@ -97,16 +97,25 @@ public class CreatePScreen implements Screen {
 		button.setSize(300, 40);
 		button.setPosition(name.getX(),name.getY()-10-button.getHeight());
 		button.add("CREATE PLAYER");
-		clothes = new Texture[2][5];
-		for(int i = 0; i < 2; i++){
-			for(int j = 0; j < 5; j++){
+		clothes = new Texture[3][6];
+		for(int i = 0; i <= 2; i++){
+			for(int j = 0; j <= 5; j++){
 				clothes[i][j] =  GameAssetManager.getInstance().get("sprites/player/" + (i+1) + "/" + (j+1) + ".png");
 			}
 		}
 		playerTexture = GameAssetManager.getInstance().get("sprites/player/player.png");
 		playerSprite = new Sprite(playerTexture);
-		playerSprite.setPosition(Gdx.graphics.getWidth() /2 -(39/8/2), Gdx.graphics.getHeight() /2 -(106/8/2)+30);
-		playerSprite.setSize(39/8, 106/8);
+		playerSprite.setSize(playerTexture.getWidth()/8, playerTexture.getHeight()/8);
+		playerSprite.setPosition(Gdx.graphics.getWidth() /2 -(playerSprite.getWidth()/2), Gdx.graphics.getHeight() /2 -(playerSprite.getHeight()/2)+30);
+		for(int i = 0;i<=2;i++)
+		{
+			chr[i] = new Sprite(clothes[i][i]);
+			chr[i].setSize(clothes[i][i].getWidth()/8, clothes[i][i].getHeight()/8);
+		}
+		chr[0].setPosition(Gdx.graphics.getWidth() /2 -(chr[0].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[0].getHeight()/2)+36);
+		chr[1].setPosition(Gdx.graphics.getWidth() /2 -(chr[1].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[1].getHeight()/2)+30);
+		chr[2].setPosition(Gdx.graphics.getWidth() /2 -(chr[2].getWidth()/2), Gdx.graphics.getHeight() /2 -(chr[2].getHeight()/2)+26);
+		
 		stage.addActor(name);
 		stage.addActor(button);
 	}
@@ -117,6 +126,10 @@ public class CreatePScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		playerSprite.draw(batch);
+		for(int i =0;i<=2;i++)
+		{
+		 chr[i].draw(batch);
+		}
 		batch.end();
 		stage.act(delta);
 		stage.draw();
