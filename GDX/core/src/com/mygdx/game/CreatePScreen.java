@@ -48,6 +48,7 @@ public class CreatePScreen implements Screen {
 	Viewport viewport;
 	Texture clothes[][];
 	Texture playerTexture;
+	Sprite playerSprite;
 	
 	public CreatePScreen() {
 		ParamLangXML();
@@ -103,6 +104,9 @@ public class CreatePScreen implements Screen {
 			}
 		}
 		playerTexture = GameAssetManager.getInstance().get("sprites/player/player.png");
+		playerSprite = new Sprite(playerTexture);
+		playerSprite.setPosition(Gdx.graphics.getWidth() /2 -(39/8/2), Gdx.graphics.getHeight() /2 -(106/8/2)+30);
+		playerSprite.setSize(39/8, 106/8);
 		stage.addActor(name);
 		stage.addActor(button);
 	}
@@ -112,7 +116,7 @@ public class CreatePScreen implements Screen {
 		update(delta);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(playerTexture, Gdx.graphics.getWidth() /2 -(39/8/2), Gdx.graphics.getHeight() /2 -(106/8/2)+30, 39/8, 106/8);
+		playerSprite.draw(batch);
 		batch.end();
 		stage.act(delta);
 		stage.draw();
