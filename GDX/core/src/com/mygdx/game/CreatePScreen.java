@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -38,6 +39,7 @@ public class CreatePScreen implements Screen {
 	DocumentBuilder builder;
 	int a = 1;
 	TextField name;
+	Button button;
 	GUITextInputListener listener;
 	Stage stage;
 	OrthographicCamera camera;
@@ -84,10 +86,15 @@ public class CreatePScreen implements Screen {
 		batch = new SpriteBatch();
 		listener = new GUITextInputListener();
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
-		name = new TextField("", skin);
-		name.setPosition(250, 250);
+		name = new TextField("Hello", skin);
 		name.setSize(300, 40);
+		name.setPosition(Gdx.graphics.getWidth()/2-name.getWidth()/2, Gdx.graphics.getHeight()/2-name.getHeight()/2);
+		button = new Button(skin);
+		button.setName("PressMe");
+		button.setSize(300, 40);
+		button.setPosition(name.getX(),name.getY()-10-button.getHeight());
 		stage.addActor(name);
+		stage.addActor(button);
 	}
 
 	@Override
@@ -106,11 +113,12 @@ public class CreatePScreen implements Screen {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		stage.getBatch().setProjectionMatrix(camera.combined);
+		if(button.isPressed()) initPlayer(name.getText(), 0);
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width/2, height/2);
+		viewport.update(width, height);
 		camera.update();
 		camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 	}
@@ -120,7 +128,7 @@ public class CreatePScreen implements Screen {
 
 	@Override
 	public void resume() {}
-
+ 
 	@Override
 	public void hide() {}
 
