@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -50,6 +52,7 @@ public class CreatePScreen implements Screen {
 	Texture clothes[][];
 	Texture playerTexture;
 	Sprite playerSprite;
+	Label label;
 	Sprite chr[] = new Sprite[3];
 	int chrl[] = new int[3];
 	boolean chrb[] = new boolean[3];
@@ -132,6 +135,10 @@ public class CreatePScreen implements Screen {
 
 		buttonchr[1].setPosition(chr[1].getX()-15-buttonchr[1].getWidth(),chr[1].getY()+160+buttonchr[1].getHeight());
 		buttonchr[2].setPosition(chr[2].getX()-15-buttonchr[2].getWidth(),chr[2].getY()+140+buttonchr[2].getHeight());
+		label = new Label("PlayerExits", skin);
+		label.setColor(Color.BLUE);
+		label.setFontScale(300/label.getWidth(), 40/label.getHeight());
+		label.setPosition(name.getX(),name.getY()+10+label.getHeight()*label.getFontScaleY()); 
 		stage.addActor(buttonchr[0]);
 		stage.addActor(buttonchr[1]);
 		stage.addActor(buttonchr[2]);
@@ -213,7 +220,8 @@ public class CreatePScreen implements Screen {
 		try {
 			if(new File(dirPathgame + "/assets/" + name + "/data.xml").exists()){
 				System.out.println("Player is exists...");
-				ScreenManager.getInstance().show(CustomScreen.GAME);
+				stage.addActor(label);
+				//ScreenManager.getInstance().show(CustomScreen.GAME);
 			}else{
 				System.err.println("Player is don't exists...");
 				WriteParamXML(data, name);
